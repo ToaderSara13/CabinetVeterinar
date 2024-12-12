@@ -33,10 +33,14 @@ public class Animal {
     public void setLocNastere(String locNastere){
         this.locNastere = locNastere;
     }
-    
-    public String toString(){
-        return this.nume+ " "+this.varsta+" "+this.locNastere;
+
+    @Override
+    public String toString() {
+        return "Animal{" + "nume=" + nume + ", varsta=" + varsta + ", locNastere=" + locNastere + '}';
     }
+
+    
+
     
     //public abstract String sunet();
     public String animalulMananca(String specie){
