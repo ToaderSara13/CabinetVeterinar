@@ -1,5 +1,13 @@
 package ro.ugal.cti.cabinetveterinar;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -9,6 +17,7 @@ package ro.ugal.cti.cabinetveterinar;
  *
  * @author st190
  */
+
 public class Gui2 extends javax.swing.JFrame {
 
     /**
@@ -27,8 +36,8 @@ public class Gui2 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        incarcareButon = new javax.swing.JButton();
+        adaugareRandNouButon = new javax.swing.JButton();
         numeAnimal = new javax.swing.JTextField();
         varstaAnimal = new javax.swing.JTextField();
         locNastereAnimal = new javax.swing.JTextField();
@@ -46,21 +55,23 @@ public class Gui2 extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         consola = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        animalTabel = new javax.swing.JTable();
+        stergereButon = new javax.swing.JButton();
+        salvareButon = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Inchide");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        incarcareButon.setText("Incarcare din fisier");
+        incarcareButon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                incarcareButonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Salveaza");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        adaugareRandNouButon.setText("Adaugare rand nou");
+        adaugareRandNouButon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                adaugareRandNouButonActionPerformed(evt);
             }
         });
 
@@ -70,8 +81,10 @@ public class Gui2 extends javax.swing.JFrame {
             }
         });
 
+        Animal.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         Animal.setText("Animal");
 
+        Proprietar.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         Proprietar.setText("Proprietar");
 
         jLabel3.setText("Nume");
@@ -88,81 +101,88 @@ public class Gui2 extends javax.swing.JFrame {
 
         consola.setColumns(20);
         consola.setRows(5);
+        consola.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         jScrollPane1.setViewportView(consola);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        animalTabel.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nume Animal", "Varsta Animal", "Loc Nastere Animal", "Nume Proprietar", "Adresa Proprietar", "Telefon Proprietar"
             }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(animalTabel);
+
+        stergereButon.setText("Stergere ");
+        stergereButon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stergereButonActionPerformed(evt);
+            }
+        });
+
+        salvareButon.setText("Salvare");
+        salvareButon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvareButonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Telefon)
+                    .addComponent(Adresa)
+                    .addComponent(Animal)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(Varsta)
+                        .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(Varsta)
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(numeAnimal, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
-                                    .addComponent(varstaAnimal)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(Animal))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(27, 27, 27)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(Adresa)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(adresaProprietar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(Telefon)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(telefonProprietar))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel6)
-                                            .addComponent(Loc_nastere))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addComponent(numeProprietar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(locNastereAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                        .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(jScrollPane1))))
+                            .addComponent(Proprietar)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(numeProprietar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(Loc_nastere)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(varstaAnimal, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                                            .addComponent(numeAnimal, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                                            .addComponent(locNastereAnimal, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(telefonProprietar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                                    .addComponent(adresaProprietar, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(Proprietar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(30, 30, 30))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(incarcareButon, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(adaugareRandNouButon))
+                        .addGap(416, 416, 416)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(salvareButon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(stergereButon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,73 +190,137 @@ public class Gui2 extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Animal)
-                            .addComponent(jButton1))
+                        .addComponent(Animal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(numeAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(varstaAnimal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Varsta))
-                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Varsta)
+                            .addComponent(varstaAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(2, 2, 2)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Loc_nastere)
                             .addComponent(locNastereAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(56, 56, 56)
+                        .addGap(62, 62, 62)
                         .addComponent(Proprietar))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(numeProprietar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(numeProprietar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Adresa)
                             .addComponent(adresaProprietar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
+                        .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Telefon)
                             .addComponent(telefonProprietar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(27, 27, 27))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(adaugareRandNouButon)
+                    .addComponent(salvareButon))
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(incarcareButon)
+                    .addComponent(stergereButon))
+                .addGap(19, 19, 19))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+public static ArrayList<Animal> animalList = new ArrayList<>();
+    private void incarcareButonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incarcareButonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Sara\\Desktop\\Proiect Sara POO\\CabinetVeterinar\\CabinetVeterinar\\Animal.csv"))) {
+                  String line;
+                 while ((line = br.readLine()) != null) {
+                
+                        String[] valoare = line.split(",");
+                        String numeAnimal = valoare[0];
+                        int varsta = Integer.parseInt(valoare[1]);
+                        String locNastereAnimal = valoare[2];
+                        String numeProprietar = valoare[3];
+                        String adresaProprietar = valoare[4];
+                        String telefonProprietar = valoare[5];
+                        Proprietar proprietar = new Proprietar( numeProprietar, adresaProprietar, telefonProprietar);
+                        Animal animal = new Animal(numeAnimal, varsta, locNastereAnimal, proprietar);
+                        animalList.add(animal); 
+                        
+                        
+            }} catch (IOException e) {
+            e.printStackTrace();
+            }
+         DefaultTableModel model = (DefaultTableModel) animalTabel.getModel();//DIN ARRAYLIST SI IL INSEREZ IN MODELUL DE TABEL
+        Object linie[] = new Object[10]; 
+        for(int i = 0 ; i<animalList.size(); i++ ){
+            linie[0]=animalList.get(i).getNume();
+            linie[1]=animalList.get(i).getVarsta();
+            linie[2]=animalList.get(i).getLocNastere();
+            Proprietar proprietar = animalList.get(i).getProprietar();
+            linie[3]=proprietar.getNumePrenume();
+            linie[4]=proprietar.getAdresa();
+            linie[5]=proprietar.getTelefon();
+            model.addRow(linie);
+        }
+    }//GEN-LAST:event_incarcareButonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void adaugareRandNouButonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adaugareRandNouButonActionPerformed
         Proprietar proprietar = new Proprietar();
         proprietar.setNumePrenume(numeProprietar.getText());
         proprietar.setAdresa(adresaProprietar.getText());
-        proprietar.setTelefon(telefonProprietar.getName());
+        proprietar.setTelefon(telefonProprietar.getText());
         
-        Animal animal = new Animal();
-        animal.setLocNastere(locNastereAnimal.getName());
-        animal.setNume(numeAnimal.getText());
-        animal.setVarsta(Integer.parseInt(varstaAnimal.getText()));
+        String locNastere = locNastereAnimal.getText();
+        String numeA = numeAnimal.getText();
+        int varstaA = Integer.parseInt(varstaAnimal.getText());
+        Animal animal = new Animal(numeA, varstaA, locNastere, proprietar);
+        animalList.add(animal);
         
-        consola.append(proprietar.toString());
-        consola.append("\n");
+        
+        DefaultTableModel modelTabela = (DefaultTableModel) animalTabel.getModel();
+        modelTabela.addRow(new Object[] {numeA , varstaA, locNastere,numeProprietar.getText(),adresaProprietar.getText(),telefonProprietar.getText()});
+
         consola.append(animal.toString());
         
-    }//GEN-LAST:event_jButton2ActionPerformed
+        
+        
+    }//GEN-LAST:event_adaugareRandNouButonActionPerformed
 
     private void varstaAnimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varstaAnimalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_varstaAnimalActionPerformed
+
+    private void stergereButonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stergereButonActionPerformed
+        // TODO add your handling code here:
+        int linie = animalTabel.getSelectedRow();
+        DefaultTableModel modelTabela = (DefaultTableModel) animalTabel.getModel();
+        modelTabela.removeRow(linie);
+        animalList.remove(linie);
+        
+    }//GEN-LAST:event_stergereButonActionPerformed
+
+    private void salvareButonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvareButonActionPerformed
+        // TODO add your handling code here:
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Sara\\Desktop\\Proiect Sara POO\\CabinetVeterinar\\CabinetVeterinar\\Animal.csv"))) {
+        for (Animal animal : animalList) {   
+            writer.write(animal.toString());
+            writer.newLine();
+}
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+        
+    }//GEN-LAST:event_salvareButonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,18 +365,20 @@ public class Gui2 extends javax.swing.JFrame {
     private javax.swing.JLabel Proprietar;
     private javax.swing.JLabel Telefon;
     private javax.swing.JLabel Varsta;
+    private javax.swing.JButton adaugareRandNouButon;
     private javax.swing.JTextField adresaProprietar;
+    private javax.swing.JTable animalTabel;
     private javax.swing.JTextArea consola;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton incarcareButon;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField locNastereAnimal;
     private javax.swing.JTextField numeAnimal;
     private javax.swing.JTextField numeProprietar;
+    private javax.swing.JButton salvareButon;
+    private javax.swing.JButton stergereButon;
     private javax.swing.JTextField telefonProprietar;
     private javax.swing.JTextField varstaAnimal;
     // End of variables declaration//GEN-END:variables
